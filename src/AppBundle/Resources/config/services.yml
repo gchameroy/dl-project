@@ -1,0 +1,4 @@
+services:
+    app.rest-client:
+        class: AppBundle\RestClient\RestClient
+        arguments: ["@circle.restclient", "@router"]
