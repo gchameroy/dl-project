@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 class CompanyController extends FOSRestController
 {
     /**
-     * @Rest\View(serializerGroups={"company"})
+     * @Rest\View(serializerGroups={"company2"})
      */
     public function getCompaniesAction()
     {
-        $companies = $this->get('doctrine.orm.entity_manager')
+        $companies = $this->getDoctrine()->getManager()
             ->getRepository('ApiBundle:Company')
             ->findAll();
 
@@ -35,7 +35,7 @@ class CompanyController extends FOSRestController
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
+            $em = $this->getDoctrine()->getManager();
             $em->persist($company);
             $em->flush();
             
@@ -79,7 +79,7 @@ class CompanyController extends FOSRestController
     
     private function updateCompany($id, Request $request, $clearMissing)
     {
-        $company = $this->get('doctrine.orm.entity_manager')
+        $company = $this->getDoctrine()->getManager()
                 ->getRepository('ApiBundle:Company')
                 ->find($id);
 
@@ -91,7 +91,7 @@ class CompanyController extends FOSRestController
         $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
+            $em = $this->getDoctrine()->getManager();
             $em->merge($company);
             $em->flush();
             
@@ -106,7 +106,7 @@ class CompanyController extends FOSRestController
      */
     public function deleteCompanyAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em = $this->getDoctrine()->getManager();
         $company = $em
             ->getRepository('ApiBundle:Company')
             ->find($id);
